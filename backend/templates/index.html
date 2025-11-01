@@ -25,24 +25,33 @@
     </script>
 </head>
 <body class="font-geist bg-white min-h-screen flex flex-col items-center justify-center p-4">
-    <div class="w-full max-w-4xl bg-white border border-gray-200 rounded-2xl p-8 mb-6">
-        <h1 class="text-3xl font-bold text-center text-gray-900 mb-8">Card Tools</h1>
+    <div class="w-full max-w-4xl bg-white border border-gray-200 rounded-2xl p-6 md:p-8 mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-6 md:mb-8">Card Tools</h1>
         
-        <div class="grid grid-cols-4 gap-2 bg-gray-50 p-2 rounded-xl border border-gray-200 mb-8">
-            <button class="tab-btn py-3 px-4 text-sm font-semibold rounded-lg bg-primary text-white transition-colors" data-tab="card-generator">
-                Card Generator
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 bg-gray-50 p-2 rounded-xl border border-gray-200 mb-6 md:mb-8">
+            <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg bg-primary text-white transition-colors flex items-center justify-center gap-2" data-tab="card-generator">
+                <i data-lucide="credit-card" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Card Generator</span>
+                <span class="sm:hidden">Cards</span>
             </button>
-            <button class="tab-btn py-3 px-4 text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors" data-tab="bin-generator">
-                BIN Gen
+            <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center justify-center gap-2" data-tab="bin-generator">
+                <i data-lucide="database" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">BIN Gen</span>
+                <span class="sm:hidden">BINs</span>
             </button>
-            <button class="tab-btn py-3 px-4 text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors" data-tab="bin-checker">
-                BIN Checker
+            <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center justify-center gap-2" data-tab="bin-checker">
+                <i data-lucide="search" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">BIN Checker</span>
+                <span class="sm:hidden">Check</span>
             </button>
-            <button class="tab-btn py-3 px-4 text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors" data-tab="stripe-checker">
-                Stripe Checker
+            <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center justify-center gap-2" data-tab="stripe-checker">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Stripe Check</span>
+                <span class="sm:hidden">Stripe</span>
             </button>
         </div>
 
+        <!-- Card Generator Tab -->
         <div class="tab-content active" id="card-generator">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
@@ -89,18 +98,26 @@
             </div>
 
             <button id="generateBtn" onclick="generateCards()" 
-                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide">
+                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
                 Generate Cards
             </button>
 
-            <div class="result-box hidden mt-6 p-6 bg-gray-50 border border-gray-200 rounded-xl" id="cardsResultBox"></div>
+            <div class="result-box hidden mt-6 p-6 bg-gray-50 border border-gray-200 rounded-xl font-mono text-sm" id="cardsResultBox"></div>
 
             <div class="grid grid-cols-2 gap-3 mt-4 hidden" id="copyButtons">
-                <button class="copy-btn py-3 bg-gray-800 text-white font-semibold rounded-xl" onclick="copyAllCards()">Copy All</button>
-                <button class="copy-btn py-3 bg-gray-300 text-gray-700 font-semibold rounded-xl" onclick="clearCards()">Clear</button>
+                <button class="copy-btn py-3 bg-gray-800 text-white font-semibold rounded-xl flex items-center justify-center gap-2" onclick="copyAllCards()">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                    Copy All
+                </button>
+                <button class="copy-btn py-3 bg-gray-300 text-gray-700 font-semibold rounded-xl flex items-center justify-center gap-2" onclick="clearCards()">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    Clear
+                </button>
             </div>
         </div>
 
+        <!-- BIN Generator Tab -->
         <div class="tab-content hidden" id="bin-generator">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
@@ -128,59 +145,76 @@
             </div>
 
             <button id="binGenerateBtn" onclick="generateBINs()" 
-                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide">
+                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
+                <i data-lucide="database" class="w-5 h-5"></i>
                 Generate BINs
             </button>
 
-            <div class="result-box hidden mt-6 p-6 bg-gray-50 border border-gray-200 rounded-xl" id="binResultBox"></div>
+            <div class="result-box hidden mt-6 p-6 bg-gray-50 border border-gray-200 rounded-xl font-mono text-sm" id="binResultBox"></div>
 
             <div class="grid grid-cols-2 gap-3 mt-4 hidden" id="binCopyButtons">
-                <button class="copy-btn py-3 bg-gray-800 text-white font-semibold rounded-xl" onclick="copyAllBINs()">Copy All</button>
-                <button class="copy-btn py-3 bg-gray-300 text-gray-700 font-semibold rounded-xl" onclick="clearBINs()">Clear</button>
+                <button class="copy-btn py-3 bg-gray-800 text-white font-semibold rounded-xl flex items-center justify-center gap-2" onclick="copyAllBINs()">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                    Copy All
+                </button>
+                <button class="copy-btn py-3 bg-gray-300 text-gray-700 font-semibold rounded-xl flex items-center justify-center gap-2" onclick="clearBINs()">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    Clear
+                </button>
             </div>
         </div>
 
+        <!-- BIN Checker Tab -->
         <div class="tab-content hidden" id="bin-checker">
             <div class="mb-6">
                 <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">BIN Numbers (one per line)</label>
                 <textarea id="binInput" placeholder="434907&#10;402360&#10;411111" 
-                          class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono"></textarea>
+                          class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono text-sm"></textarea>
             </div>
 
             <button id="checkBinBtn" onclick="checkBulkBINs()" 
-                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide">
+                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
+                <i data-lucide="search" class="w-5 h-5"></i>
                 Check BINs
             </button>
 
             <div class="hidden mt-6" id="binStats">
-                <div class="grid grid-cols-2 gap-6 p-6 bg-gray-50 border border-gray-200 rounded-xl">
+                <div class="grid grid-cols-2 gap-4 md:gap-6 p-4 md:p-6 bg-gray-50 border border-gray-200 rounded-xl">
                     <div>
                         <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Database</div>
-                        <div id="totalDatabase" class="text-2xl font-bold text-gray-900"></div>
+                        <div id="totalDatabase" class="text-xl md:text-2xl font-bold text-gray-900"></div>
                     </div>
                     <div>
                         <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Checked BINs</div>
-                        <div id="checkedBins" class="text-2xl font-bold text-gray-900"></div>
+                        <div id="checkedBins" class="text-xl md:text-2xl font-bold text-gray-900"></div>
                     </div>
                 </div>
             </div>
 
-            <div id="binInfoContainer" class="mt-6"></div>
+            <div id="binInfoContainer" class="mt-6 space-y-4"></div>
         </div>
 
+        <!-- Stripe Checker Tab -->
         <div class="tab-content hidden" id="stripe-checker">
             <div class="mb-6">
                 <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Cards to Check (one per line)</label>
                 <textarea id="cardsInput" placeholder="4242424242424242|03|2029|123&#10;5555555555554444|12|2028|456" 
-                          class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono"></textarea>
+                          class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono text-sm"></textarea>
             </div>
 
             <button id="checkBtn" onclick="checkCards()" 
-                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide">
+                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
                 Check Cards
             </button>
 
-            <div class="checker-results mt-6" id="checkerResults"></div>
+            <div class="mt-6">
+                <div class="w-full bg-gray-200 rounded-full h-2 hidden" id="progressBar">
+                    <div class="bg-green-600 h-2 rounded-full transition-all duration-300" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="checker-results mt-6 space-y-4" id="checkerResults"></div>
         </div>
     </div>
 
@@ -192,12 +226,13 @@
         let generatedBINsList = [];
         let checkedBINsSet = new Set();
         let totalDatabaseBINs = 0;
+        let isChecking = false;
 
         // Initialize year dropdown
         const yearSelect = document.getElementById('year');
-        yearSelect.innerHTML = '<option value="">Random</option>';
         const currentYear = new Date().getFullYear();
-        for (let year = currentYear; year <= 2050; year++) {
+        yearSelect.innerHTML = '<option value="">Random</option>';
+        for (let year = currentYear; year <= currentYear + 10; year++) {
             const option = document.createElement('option');
             option.value = year;
             option.textContent = year;
@@ -223,9 +258,13 @@
                 });
                 document.getElementById(tabId).classList.add('active');
                 document.getElementById(tabId).classList.remove('hidden');
+                
+                // Refresh icons for the new tab
+                lucide.createIcons();
             });
         });
 
+        // API Functions with proper Flask endpoints
         async function generateCards() {
             const bin = document.getElementById('bin').value;
             const month = document.getElementById('month').value;
@@ -235,7 +274,8 @@
 
             const btn = document.getElementById('generateBtn');
             btn.disabled = true;
-            btn.innerHTML = 'Generating...';
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>Generating...';
+            lucide.createIcons();
 
             generatedCardsList = [];
             const resultBox = document.getElementById('cardsResultBox');
@@ -243,65 +283,46 @@
             resultBox.classList.add('hidden');
             document.getElementById('copyButtons').classList.add('hidden');
 
-            // Simulate API call delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            try {
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ 
+                        bin: bin, 
+                        month: month, 
+                        year: year, 
+                        cvv: cvv,
+                        amount: amount 
+                    })
+                });
 
-            // Mock card generation
-            for (let i = 0; i < amount; i++) {
-                const mockCard = generateMockCard(bin);
-                generatedCardsList.push(mockCard);
-                await new Promise(resolve => setTimeout(resolve, 50));
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.cards && Array.isArray(data.cards)) {
+                    generatedCardsList = data.cards;
+                    resultBox.textContent = generatedCardsList.join('\n');
+                    resultBox.classList.remove('hidden');
+                    document.getElementById('copyButtons').classList.remove('hidden');
+                } else {
+                    throw new Error('Invalid response format');
+                }
+
+            } catch (error) {
+                console.error('Error generating cards:', error);
+                resultBox.textContent = 'Error generating cards. Please try again.';
+                resultBox.classList.remove('hidden');
             }
-
-            resultBox.textContent = generatedCardsList.join('\n');
-            resultBox.classList.remove('hidden');
-            document.getElementById('copyButtons').classList.remove('hidden');
 
             btn.disabled = false;
-            btn.textContent = 'Generate Cards';
-        }
-
-        function generateMockCard(bin) {
-            const prefix = bin || '4'.repeat(6);
-            const remainingLength = 16 - prefix.length;
-            let cardNumber = prefix;
-            
-            for (let i = 0; i < remainingLength - 1; i++) {
-                cardNumber += Math.floor(Math.random() * 10);
-            }
-            
-            // Luhn algorithm check digit
-            cardNumber += calculateLuhnCheckDigit(cardNumber);
-            
-            const month = document.getElementById('month').value || 
-                         String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-            const year = document.getElementById('year').value || 
-                        String(currentYear + Math.floor(Math.random() * 5));
-            const cvv = document.getElementById('cvv').value || 
-                       String(Math.floor(Math.random() * 900) + 100);
-            
-            return `${cardNumber}|${month}|${year}|${cvv}`;
-        }
-
-        function calculateLuhnCheckDigit(number) {
-            let sum = 0;
-            let isEven = false;
-            
-            for (let i = number.length - 1; i >= 0; i--) {
-                let digit = parseInt(number.charAt(i));
-                
-                if (isEven) {
-                    digit *= 2;
-                    if (digit > 9) {
-                        digit -= 9;
-                    }
-                }
-                
-                sum += digit;
-                isEven = !isEven;
-            }
-            
-            return String((10 - (sum % 10)) % 10);
+            btn.innerHTML = '<i data-lucide="sparkles" class="w-5 h-5"></i>Generate Cards';
+            lucide.createIcons();
         }
 
         async function generateBINs() {
@@ -311,7 +332,8 @@
 
             const btn = document.getElementById('binGenerateBtn');
             btn.disabled = true;
-            btn.innerHTML = 'Generating...';
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>Generating...';
+            lucide.createIcons();
 
             generatedBINsList = [];
             const resultBox = document.getElementById('binResultBox');
@@ -319,30 +341,44 @@
             resultBox.classList.add('hidden');
             document.getElementById('binCopyButtons').classList.add('hidden');
 
-            await new Promise(resolve => setTimeout(resolve, 800));
+            try {
+                const response = await fetch('/generate_bin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ 
+                        card_type: cardType, 
+                        mode: mode,
+                        amount: amount 
+                    })
+                });
 
-            // Mock BIN generation
-            for (let i = 0; i < amount; i++) {
-                let bin;
-                if (cardType === 'visa') {
-                    bin = '4' + Math.floor(10000 + Math.random() * 90000);
-                } else if (cardType === 'mastercard') {
-                    bin = '5' + Math.floor(10000 + Math.random() * 90000);
-                } else if (cardType === 'amex') {
-                    bin = '3' + (Math.random() > 0.5 ? '4' : '7') + Math.floor(1000 + Math.random() * 9000);
-                } else {
-                    bin = '6' + Math.floor(10000 + Math.random() * 90000);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                generatedBINsList.push(bin);
-                await new Promise(resolve => setTimeout(resolve, 50));
+
+                const data = await response.json();
+                
+                if (data.bins && Array.isArray(data.bins)) {
+                    generatedBINsList = data.bins;
+                    resultBox.textContent = generatedBINsList.join('\n');
+                    resultBox.classList.remove('hidden');
+                    document.getElementById('binCopyButtons').classList.remove('hidden');
+                } else {
+                    throw new Error('Invalid response format');
+                }
+
+            } catch (error) {
+                console.error('Error generating BINs:', error);
+                resultBox.textContent = 'Error generating BINs. Please try again.';
+                resultBox.classList.remove('hidden');
             }
 
-            resultBox.textContent = generatedBINsList.join('\n');
-            resultBox.classList.remove('hidden');
-            document.getElementById('binCopyButtons').classList.remove('hidden');
-
             btn.disabled = false;
-            btn.textContent = 'Generate BINs';
+            btn.innerHTML = '<i data-lucide="database" class="w-5 h-5"></i>Generate BINs';
+            lucide.createIcons();
         }
 
         async function checkBulkBINs() {
@@ -356,19 +392,25 @@
 
             const btn = document.getElementById('checkBinBtn');
             btn.disabled = true;
-            btn.innerHTML = 'Checking...';
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>Checking...';
+            lucide.createIcons();
 
             const container = document.getElementById('binInfoContainer');
             container.innerHTML = '';
             
             document.getElementById('binStats').classList.add('hidden');
+            checkedBINsSet.clear();
 
             for (let i = 0; i < bins.length; i++) {
                 const binNumber = bins[i].trim();
                 
+                // Update progress
+                const progress = ((i + 1) / bins.length) * 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+                
                 if (binNumber.length !== 6 || !/^\d+$/.test(binNumber)) {
                     const errorDiv = document.createElement('div');
-                    errorDiv.className = 'p-4 bg-red-50 border border-red-200 rounded-xl mb-4';
+                    errorDiv.className = 'p-4 bg-red-50 border border-red-200 rounded-xl';
                     errorDiv.innerHTML = `
                         <div class="flex justify-between items-center">
                             <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">BIN</span>
@@ -379,76 +421,226 @@
                     continue;
                 }
 
-                // Mock BIN check
-                const isValid = Math.random() > 0.3; // 70% chance of being valid
-                checkedBINsSet.add(binNumber);
-                totalDatabaseBINs = Math.floor(Math.random() * 10000) + 5000;
+                try {
+                    const response = await fetch('/check_bin', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ bin: binNumber })
+                    });
 
-                if (isValid) {
-                    const brands = ['Visa', 'Mastercard', 'American Express', 'Discover'];
-                    const types = ['Credit', 'Debit', 'Prepaid'];
-                    const issuers = ['Chase', 'Bank of America', 'Wells Fargo', 'Citi', 'Capital One'];
-                    const countries = ['United States', 'United Kingdom', 'Canada', 'Australia', 'Germany'];
-                    
-                    const binInfoDiv = document.createElement('div');
-                    binInfoDiv.className = 'p-4 bg-gray-50 border border-gray-200 rounded-xl mb-4';
-                    binInfoDiv.innerHTML = `
-                        <div class="space-y-3">
-                            <div class="flex justify-between">
+                    if (response.ok) {
+                        const data = await response.json();
+                        checkedBINsSet.add(binNumber);
+                        totalDatabaseBINs = data.total_database || 0;
+                        
+                        const binInfoDiv = document.createElement('div');
+                        binInfoDiv.className = 'p-4 bg-gray-50 border border-gray-200 rounded-xl';
+                        binInfoDiv.innerHTML = `
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">BIN</span>
+                                    <span class="text-gray-900 font-medium">${data.bin}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Brand</span>
+                                    <span class="text-gray-900 font-medium">${data.brand}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Type</span>
+                                    <span class="text-gray-900 font-medium">${data.type}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Issuer</span>
+                                    <span class="text-gray-900 font-medium">${data.issuer}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Country</span>
+                                    <span class="text-gray-900 font-medium">${data.country}</span>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(binInfoDiv);
+                    } else {
+                        const errorData = await response.json();
+                        totalDatabaseBINs = errorData.total_database || 0;
+                        
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'p-4 bg-gray-50 border border-gray-200 rounded-xl';
+                        errorDiv.innerHTML = `
+                            <div class="flex justify-between items-center">
                                 <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">BIN</span>
-                                <span class="text-gray-900 font-medium">${binNumber}</span>
+                                <span class="text-gray-500 font-medium">${binNumber} - Not Found</span>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Brand</span>
-                                <span class="text-gray-900 font-medium">${brands[Math.floor(Math.random() * brands.length)]}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Type</span>
-                                <span class="text-gray-900 font-medium">${types[Math.floor(Math.random() * types.length)]}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Issuer</span>
-                                <span class="text-gray-900 font-medium">${issuers[Math.floor(Math.random() * issuers.length)]}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Country</span>
-                                <span class="text-gray-900 font-medium">${countries[Math.floor(Math.random() * countries.length)]}</span>
-                            </div>
-                        </div>
-                    `;
-                    container.appendChild(binInfoDiv);
-                } else {
+                        `;
+                        container.appendChild(errorDiv);
+                    }
+                } catch (error) {
+                    console.error('Error checking BIN:', error);
                     const errorDiv = document.createElement('div');
-                    errorDiv.className = 'p-4 bg-gray-50 border border-gray-200 rounded-xl mb-4';
+                    errorDiv.className = 'p-4 bg-red-50 border border-red-200 rounded-xl';
                     errorDiv.innerHTML = `
                         <div class="flex justify-between items-center">
                             <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">BIN</span>
-                            <span class="text-gray-500 font-medium">${binNumber} - Not Found</span>
+                            <span class="text-red-600 font-medium">${binNumber} - Network Error</span>
                         </div>
                     `;
                     container.appendChild(errorDiv);
                 }
                 
-                await new Promise(resolve => setTimeout(resolve, 200));
+                // Small delay to prevent overwhelming the server
+                await new Promise(resolve => setTimeout(resolve, 100));
             }
             
+            // Show statistics
             document.getElementById('binStats').classList.remove('hidden');
             document.getElementById('totalDatabase').textContent = totalDatabaseBINs.toLocaleString();
             document.getElementById('checkedBins').textContent = checkedBINsSet.size.toLocaleString();
             
             btn.disabled = false;
-            btn.textContent = 'Check BINs';
+            btn.innerHTML = '<i data-lucide="search" class="w-5 h-5"></i>Check BINs';
+            lucide.createIcons();
         }
 
+        async function checkCards() {
+            if (isChecking) return;
+            
+            const cardsInput = document.getElementById('cardsInput').value;
+            const cards = cardsInput.split('\n').filter(line => line.trim() !== '');
+            
+            if (cards.length === 0) {
+                alert('Please enter at least one card');
+                return;
+            }
+
+            isChecking = true;
+            const btn = document.getElementById('checkBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>Checking...';
+            lucide.createIcons();
+            
+            document.getElementById('checkerResults').innerHTML = '';
+            document.getElementById('progressBar').classList.remove('hidden');
+
+            for (let i = 0; i < cards.length; i++) {
+                const card = cards[i].trim();
+                
+                // Update progress
+                const progress = ((i + 1) / cards.length) * 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+                
+                try {
+                    const response = await fetch('/check', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ card: card })
+                    });
+
+                    let result;
+                    if (response.ok) {
+                        result = await response.json();
+                    } else {
+                        result = {
+                            card: card,
+                            status: 'UNKNOWN',
+                            message: "Server error - please try again"
+                        };
+                    }
+                    
+                    // Ensure message is not empty
+                    if (!result.message || result.message.trim() === '') {
+                        result.message = "The card didn't go through stripe's server, Try again";
+                        result.status = 'UNKNOWN';
+                    }
+                    
+                    displayResult(result);
+                } catch (error) {
+                    console.error('Error checking card:', error);
+                    displayResult({
+                        card: card,
+                        status: 'ERROR',
+                        message: 'Network error - please check your connection'
+                    });
+                }
+                
+                // Rate limiting delay
+                if (i < cards.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+            
+            isChecking = false;
+            btn.disabled = false;
+            btn.innerHTML = '<i data-lucide="shield-check" class="w-5 h-5"></i>Check Cards';
+            document.getElementById('progressBar').classList.add('hidden');
+            lucide.createIcons();
+        }
+
+        function displayResult(result) {
+            const resultsDiv = document.getElementById('checkerResults');
+            const resultCard = document.createElement('div');
+            
+            const statusColors = {
+                'SUCCESS': 'bg-green-50 border-green-200',
+                'FAIL': 'bg-red-50 border-red-200',
+                'UNKNOWN': 'bg-yellow-50 border-yellow-200',
+                'ERROR': 'bg-gray-50 border-gray-200'
+            };
+            
+            const statusTexts = {
+                'SUCCESS': 'APPROVED',
+                'FAIL': 'DECLINED',
+                'UNKNOWN': 'UNKNOWN',
+                'ERROR': 'ERROR'
+            };
+            
+            const statusTextColors = {
+                'SUCCESS': 'text-green-600',
+                'FAIL': 'text-red-600',
+                'UNKNOWN': 'text-yellow-600',
+                'ERROR': 'text-gray-600'
+            };
+            
+            const statusIcons = {
+                'SUCCESS': 'check-circle',
+                'FAIL': 'x-circle',
+                'UNKNOWN': 'help-circle',
+                'ERROR': 'alert-circle'
+            };
+            
+            resultCard.className = `p-4 border rounded-xl ${statusColors[result.status] || statusColors.UNKNOWN}`;
+            
+            resultCard.innerHTML = `
+                <div class="font-mono text-gray-900 font-semibold mb-2 text-sm">${result.card}</div>
+                <div class="flex items-center gap-2">
+                    <i data-lucide="${statusIcons[result.status] || 'help-circle'}" class="w-4 h-4 ${statusTextColors[result.status] || statusTextColors.UNKNOWN}"></i>
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusTextColors[result.status] || statusTextColors.UNKNOWN} bg-white border">
+                        ${statusTexts[result.status] || statusTexts.UNKNOWN}
+                    </span>
+                    <span class="text-gray-700 text-sm">${result.message}</span>
+                </div>
+            `;
+            
+            resultsDiv.appendChild(resultCard);
+            lucide.createIcons();
+        }
+
+        // Utility functions
         function copyAllCards() {
             const allCards = generatedCardsList.join('\n');
             navigator.clipboard.writeText(allCards);
             
             const btn = event.target;
-            const originalText = btn.textContent;
-            btn.textContent = 'Copied!';
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>Copied!';
             setTimeout(() => {
-                btn.textContent = originalText;
+                btn.innerHTML = originalText;
+                lucide.createIcons();
             }, 2000);
         }
 
@@ -457,10 +649,11 @@
             navigator.clipboard.writeText(allBINs);
             
             const btn = event.target;
-            const originalText = btn.textContent;
-            btn.textContent = 'Copied!';
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>Copied!';
             setTimeout(() => {
-                btn.textContent = originalText;
+                btn.innerHTML = originalText;
+                lucide.createIcons();
             }, 2000);
         }
 
@@ -478,88 +671,10 @@
             document.getElementById('binCopyButtons').classList.add('hidden');
         }
 
-        let isChecking = false;
-
-        async function checkCards() {
-            if (isChecking) return;
-            
-            const cardsInput = document.getElementById('cardsInput').value;
-            const cards = cardsInput.split('\n').filter(line => line.trim() !== '');
-            
-            if (cards.length === 0) {
-                alert('Please enter at least one card');
-                return;
-            }
-
-            isChecking = true;
-            document.getElementById('checkBtn').disabled = true;
-            document.getElementById('checkBtn').innerHTML = 'Checking...';
-            document.getElementById('checkerResults').innerHTML = '';
-            
-            for (let i = 0; i < cards.length; i++) {
-                const card = cards[i].trim();
-                
-                // Mock card checking
-                const status = Math.random() > 0.5 ? 'SUCCESS' : 'FAIL';
-                const messages = {
-                    'SUCCESS': ['Payment processed successfully', 'Transaction approved', 'Card verified'],
-                    'FAIL': ['Insufficient funds', 'Card declined', 'Invalid card number']
-                };
-                
-                const message = messages[status][Math.floor(Math.random() * messages[status].length)];
-                
-                displayResult({
-                    card: card,
-                    status: status,
-                    message: message
-                });
-                
-                if (i < cards.length - 1) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
-            }
-            
-            isChecking = false;
-            document.getElementById('checkBtn').disabled = false;
-            document.getElementById('checkBtn').textContent = 'Check Cards';
-        }
-
-        function displayResult(result) {
-            const resultsDiv = document.getElementById('checkerResults');
-            const resultCard = document.createElement('div');
-            
-            const statusColors = {
-                'SUCCESS': 'bg-green-50 border-green-200',
-                'FAIL': 'bg-red-50 border-red-200',
-                'UNKNOWN': 'bg-yellow-50 border-yellow-200'
-            };
-            
-            const statusTexts = {
-                'SUCCESS': 'APPROVED',
-                'FAIL': 'DECLINED',
-                'UNKNOWN': 'UNKNOWN'
-            };
-            
-            const statusTextColors = {
-                'SUCCESS': 'text-green-600',
-                'FAIL': 'text-red-600',
-                'UNKNOWN': 'text-yellow-600'
-            };
-            
-            resultCard.className = `p-4 border rounded-xl mb-3 ${statusColors[result.status] || statusColors.UNKNOWN}`;
-            
-            resultCard.innerHTML = `
-                <div class="font-mono text-gray-900 font-semibold mb-2">${result.card}</div>
-                <div class="flex items-center gap-2">
-                    <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusTextColors[result.status] || statusTextColors.UNKNOWN} bg-white border">
-                        ${statusTexts[result.status] || statusTexts.UNKNOWN}
-                    </span>
-                    <span class="text-gray-700">${result.message}</span>
-                </div>
-            `;
-            
-            resultsDiv.appendChild(resultCard);
-        }
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
     </script>
 </body>
 </html>
