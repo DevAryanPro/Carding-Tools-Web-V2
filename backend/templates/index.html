@@ -238,9 +238,10 @@
                                class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Amount</label>
-                        <input type="number" id="amount" placeholder="1" value="1" min="1" max="100"
+                        <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Amount (Max: 20)</label>
+                        <input type="number" id="amount" placeholder="1" value="1" min="1" max="20"
                                class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400">
+                        <p class="text-xs text-gray-500 mt-1">Maximum 20 cards per generation</p>
                     </div>
                 </div>
                 
@@ -317,9 +318,10 @@
                 </div>
 
                 <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Amount</label>
-                    <input type="number" id="binAmount" placeholder="1" value="1" min="1" max="100"
+                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Amount (Max: 25)</label>
+                    <input type="number" id="binAmount" placeholder="1" value="1" min="1" max="25"
                            class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400">
+                    <p class="text-xs text-gray-500 mt-1">Maximum 25 BINs per generation</p>
                 </div>
 
                 <button id="binGenerateBtn" onclick="generateBINs()" 
@@ -345,9 +347,11 @@
             <!-- BIN Checker Tab -->
             <div class="tab-content hidden" id="bin-checker">
                 <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">BIN Numbers (one per line)</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">BIN Numbers (Max: 15)</label>
                     <textarea id="binInput" placeholder="434907&#10;402360&#10;411111" 
-                              class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono text-sm"></textarea>
+                              class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono text-sm"
+                              oninput="validateBINInput(this)"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Maximum 15 BINs allowed per check</p>
                 </div>
 
                 <button id="checkBinBtn" onclick="checkBulkBINs()" 
@@ -379,9 +383,11 @@
             <!-- Stripe Checker Tab -->
             <div class="tab-content hidden" id="stripe-checker">
                 <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Cards to Check (one per line)</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Cards to Check (Max: 10)</label>
                     <textarea id="cardsInput" placeholder="4242424242424242|03|2029|123&#10;5555555555554444|12|2028|456" 
-                              class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono text-sm"></textarea>
+                              class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono text-sm"
+                              oninput="validateCardsInput(this)"></textarea>
+                    <p class="text-xs text-gray-500 mt-1">Maximum 10 cards allowed per check</p>
                 </div>
 
                 <button id="checkBtn" onclick="checkCards()" 
@@ -402,11 +408,11 @@
     </div>
 
     <!-- Sticky Footer -->
-    <footer class="bg-gray-900 text-white py-4 mt-auto sticky bottom-0">
+    <footer class="bg-white text-black py-4 mt-auto">
         <div class="container mx-auto px-4 text-center">
             <p class="text-sm">
-                Design by Kaiiddo <a href="https://telegram.me/kaiiddo" class="text-blue-400 hover:text-blue-300 underline">@kaiiddo</a> | 
-                All rights reserved Net x Defender 2025 <a href="https://t.me/+OEpFBmIwyag5ZTU9" class="text-blue-400 hover:text-blue-300 underline">Join Channel</a>
+                Design by Kaiiddo <a href="https://telegram.me/kaiiddo" class="text-blue-600 hover:text-blue-800 underline">@kaiiddo</a> | 
+                All rights reserved Net x Defender 2025 <a href="https://t.me/+OEpFBmIwyag5ZTU9" class="text-blue-600 hover:text-blue-800 underline">Join Channel</a>
             </p>
         </div>
     </footer>
@@ -421,6 +427,14 @@
         let totalDatabaseBINs = 0;
         let isChecking = false;
 
+        // Limits configuration
+        const LIMITS = {
+            cardGeneration: 20,
+            binGeneration: 25,
+            binChecker: 15,
+            stripeChecker: 10
+        };
+
         // Initialize year dropdown
         const yearSelect = document.getElementById('year');
         const currentYear = new Date().getFullYear();
@@ -430,6 +444,27 @@
             option.value = year;
             option.textContent = year;
             yearSelect.appendChild(option);
+        }
+
+        // Input validation functions
+        function validateBINInput(textarea) {
+            const lines = textarea.value.split('\n').filter(line => line.trim() !== '');
+            if (lines.length > LIMITS.binChecker) {
+                alert(`Maximum ${LIMITS.binChecker} BINs allowed. You entered ${lines.length}.`);
+                // Remove extra lines
+                const validLines = lines.slice(0, LIMITS.binChecker);
+                textarea.value = validLines.join('\n');
+            }
+        }
+
+        function validateCardsInput(textarea) {
+            const lines = textarea.value.split('\n').filter(line => line.trim() !== '');
+            if (lines.length > LIMITS.stripeChecker) {
+                alert(`Maximum ${LIMITS.stripeChecker} cards allowed. You entered ${lines.length}.`);
+                // Remove extra lines
+                const validLines = lines.slice(0, LIMITS.stripeChecker);
+                textarea.value = validLines.join('\n');
+            }
         }
 
         // Tab switching functionality for both desktop and mobile
@@ -477,7 +512,14 @@
             const month = document.getElementById('month').value;
             const year = document.getElementById('year').value;
             const cvv = document.getElementById('cvv').value;
-            const amount = parseInt(document.getElementById('amount').value) || 1;
+            let amount = parseInt(document.getElementById('amount').value) || 1;
+
+            // Validate amount limit
+            if (amount > LIMITS.cardGeneration) {
+                alert(`Maximum ${LIMITS.cardGeneration} cards allowed per generation.`);
+                amount = LIMITS.cardGeneration;
+                document.getElementById('amount').value = LIMITS.cardGeneration;
+            }
 
             const btn = document.getElementById('generateBtn');
             btn.disabled = true;
@@ -544,7 +586,14 @@
         async function generateBINs() {
             const cardType = document.getElementById('cardType').value;
             const mode = document.getElementById('generationMode').value;
-            const amount = parseInt(document.getElementById('binAmount').value) || 1;
+            let amount = parseInt(document.getElementById('binAmount').value) || 1;
+
+            // Validate amount limit
+            if (amount > LIMITS.binGeneration) {
+                alert(`Maximum ${LIMITS.binGeneration} BINs allowed per generation.`);
+                amount = LIMITS.binGeneration;
+                document.getElementById('binAmount').value = LIMITS.binGeneration;
+            }
 
             const btn = document.getElementById('binGenerateBtn');
             btn.disabled = true;
@@ -612,6 +661,12 @@
             
             if (bins.length === 0) {
                 alert('Please enter at least one BIN number');
+                return;
+            }
+
+            // Validate BIN limit
+            if (bins.length > LIMITS.binChecker) {
+                alert(`Maximum ${LIMITS.binChecker} BINs allowed per check.`);
                 return;
             }
 
@@ -737,6 +792,12 @@
             
             if (cards.length === 0) {
                 alert('Please enter at least one card');
+                return;
+            }
+
+            // Validate card limit
+            if (cards.length > LIMITS.stripeChecker) {
+                alert(`Maximum ${LIMITS.stripeChecker} cards allowed per check.`);
                 return;
             }
 
