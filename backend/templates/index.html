@@ -23,6 +23,133 @@
             }
         }
     </script>
+    <style>
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e5e7eb;
+            border-top-color: #000000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .progress-bar {
+            margin-top: 18px;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #000000;
+            transition: width 0.3s ease;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.success {
+            background: rgba(34, 197, 94, 0.3);
+            color: #16a34a;
+        }
+
+        .status-badge.fail {
+            background: rgba(239, 68, 68, 0.3);
+            color: #dc2626;
+        }
+
+        .status-badge.unknown {
+            background: rgba(245, 158, 11, 0.3);
+            color: #d97706;
+        }
+
+        .card-result {
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            transition: all 0.4s ease;
+        }
+
+        .card-result.success {
+            background: rgba(34, 197, 94, 0.15);
+            border-color: rgba(34, 197, 94, 0.6);
+        }
+
+        .card-result.fail {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.6);
+        }
+
+        .card-result.unknown {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: rgba(245, 158, 11, 0.6);
+        }
+
+        .card-number {
+            color: #111827;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .card-status {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .bin-info {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+            margin-top: 22px;
+        }
+
+        .bin-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .bin-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .bin-info-label {
+            color: #6b7280;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bin-info-value {
+            color: #111827;
+            font-weight: 700;
+            font-size: 15px;
+        }
+    </style>
 </head>
 <body class="font-geist bg-white min-h-screen flex flex-col items-center justify-center p-4">
     <div class="w-full max-w-4xl bg-white border border-gray-200 rounded-2xl p-6 md:p-8 mb-6">
@@ -178,6 +305,10 @@
                 Check BINs
             </button>
 
+            <div class="progress-bar hidden mt-6" id="binProgressBar">
+                <div class="progress-fill" id="binProgressFill"></div>
+            </div>
+
             <div class="hidden mt-6" id="binStats">
                 <div class="grid grid-cols-2 gap-4 md:gap-6 p-4 md:p-6 bg-gray-50 border border-gray-200 rounded-xl">
                     <div>
@@ -208,11 +339,11 @@
                 Check Cards
             </button>
 
-            <div class="mt-6">
-                <div class="w-full bg-gray-200 rounded-full h-2 hidden" id="progressBar">
-                    <div class="bg-green-600 h-2 rounded-full transition-all duration-300" id="progressFill" style="width: 0%"></div>
-                </div>
+            <div class="progress-bar hidden mt-6" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
             </div>
+
+            <div class="countdown hidden text-center text-gray-700 mt-4 font-semibold" id="countdown"></div>
 
             <div class="checker-results mt-6 space-y-4" id="checkerResults"></div>
         </div>
@@ -264,7 +395,7 @@
             });
         });
 
-        // API Functions with proper Flask endpoints
+        // Card Generator - Fixed API response handling
         async function generateCards() {
             const bin = document.getElementById('bin').value;
             const month = document.getElementById('month').value;
@@ -288,7 +419,6 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: JSON.stringify({ 
                         bin: bin, 
@@ -305,14 +435,20 @@
 
                 const data = await response.json();
                 
-                if (data.cards && Array.isArray(data.cards)) {
+                // Handle both single card and multiple cards response
+                if (data.card) {
+                    // Single card response (original format)
+                    generatedCardsList = [data.card];
+                } else if (data.cards && Array.isArray(data.cards)) {
+                    // Multiple cards response
                     generatedCardsList = data.cards;
-                    resultBox.textContent = generatedCardsList.join('\n');
-                    resultBox.classList.remove('hidden');
-                    document.getElementById('copyButtons').classList.remove('hidden');
                 } else {
                     throw new Error('Invalid response format');
                 }
+
+                resultBox.textContent = generatedCardsList.join('\n');
+                resultBox.classList.remove('hidden');
+                document.getElementById('copyButtons').classList.remove('hidden');
 
             } catch (error) {
                 console.error('Error generating cards:', error);
@@ -325,6 +461,7 @@
             lucide.createIcons();
         }
 
+        // BIN Generator - Fixed API response handling
         async function generateBINs() {
             const cardType = document.getElementById('cardType').value;
             const mode = document.getElementById('generationMode').value;
@@ -346,7 +483,6 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: JSON.stringify({ 
                         card_type: cardType, 
@@ -361,14 +497,20 @@
 
                 const data = await response.json();
                 
-                if (data.bins && Array.isArray(data.bins)) {
+                // Handle both single BIN and multiple BINs response
+                if (data.bin) {
+                    // Single BIN response (original format)
+                    generatedBINsList = [data.bin];
+                } else if (data.bins && Array.isArray(data.bins)) {
+                    // Multiple BINs response
                     generatedBINsList = data.bins;
-                    resultBox.textContent = generatedBINsList.join('\n');
-                    resultBox.classList.remove('hidden');
-                    document.getElementById('binCopyButtons').classList.remove('hidden');
                 } else {
                     throw new Error('Invalid response format');
                 }
+
+                resultBox.textContent = generatedBINsList.join('\n');
+                resultBox.classList.remove('hidden');
+                document.getElementById('binCopyButtons').classList.remove('hidden');
 
             } catch (error) {
                 console.error('Error generating BINs:', error);
@@ -381,6 +523,7 @@
             lucide.createIcons();
         }
 
+        // BIN Checker - Fixed API response handling
         async function checkBulkBINs() {
             const binInput = document.getElementById('binInput').value;
             const bins = binInput.split('\n').filter(line => line.trim() !== '');
@@ -392,13 +535,13 @@
 
             const btn = document.getElementById('checkBinBtn');
             btn.disabled = true;
-            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>Checking...';
-            lucide.createIcons();
+            btn.innerHTML = 'Checking<span class="loading-spinner"></span>';
 
             const container = document.getElementById('binInfoContainer');
             container.innerHTML = '';
             
             document.getElementById('binStats').classList.add('hidden');
+            document.getElementById('binProgressBar').classList.remove('hidden');
             checkedBINsSet.clear();
 
             for (let i = 0; i < bins.length; i++) {
@@ -406,15 +549,15 @@
                 
                 // Update progress
                 const progress = ((i + 1) / bins.length) * 100;
-                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('binProgressFill').style.width = progress + '%';
                 
                 if (binNumber.length !== 6 || !/^\d+$/.test(binNumber)) {
                     const errorDiv = document.createElement('div');
-                    errorDiv.className = 'p-4 bg-red-50 border border-red-200 rounded-xl';
+                    errorDiv.className = 'bin-info';
                     errorDiv.innerHTML = `
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">BIN</span>
-                            <span class="text-red-600 font-medium">${binNumber} - Invalid Format</span>
+                        <div class="bin-info-item">
+                            <span class="bin-info-label">BIN</span>
+                            <span class="bin-info-value" style="color: #dc2626;">${binNumber} - Invalid Format</span>
                         </div>
                     `;
                     container.appendChild(errorDiv);
@@ -426,72 +569,70 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
                         },
                         body: JSON.stringify({ bin: binNumber })
                     });
+
+                    const binInfoDiv = document.createElement('div');
+                    binInfoDiv.className = 'bin-info';
 
                     if (response.ok) {
                         const data = await response.json();
                         checkedBINsSet.add(binNumber);
                         totalDatabaseBINs = data.total_database || 0;
                         
-                        const binInfoDiv = document.createElement('div');
-                        binInfoDiv.className = 'p-4 bg-gray-50 border border-gray-200 rounded-xl';
                         binInfoDiv.innerHTML = `
-                            <div class="space-y-3">
-                                <div class="flex justify-between">
-                                    <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">BIN</span>
-                                    <span class="text-gray-900 font-medium">${data.bin}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Brand</span>
-                                    <span class="text-gray-900 font-medium">${data.brand}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Type</span>
-                                    <span class="text-gray-900 font-medium">${data.type}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Issuer</span>
-                                    <span class="text-gray-900 font-medium">${data.issuer}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Country</span>
-                                    <span class="text-gray-900 font-medium">${data.country}</span>
-                                </div>
+                            <div class="bin-info-item">
+                                <span class="bin-info-label">BIN</span>
+                                <span class="bin-info-value">${data.bin}</span>
+                            </div>
+                            <div class="bin-info-item">
+                                <span class="bin-info-label">Brand</span>
+                                <span class="bin-info-value">${data.brand}</span>
+                            </div>
+                            <div class="bin-info-item">
+                                <span class="bin-info-label">Type</span>
+                                <span class="bin-info-value">${data.type}</span>
+                            </div>
+                            <div class="bin-info-item">
+                                <span class="bin-info-label">Category</span>
+                                <span class="bin-info-value">${data.category || 'N/A'}</span>
+                            </div>
+                            <div class="bin-info-item">
+                                <span class="bin-info-label">Issuer</span>
+                                <span class="bin-info-value">${data.issuer}</span>
+                            </div>
+                            <div class="bin-info-item">
+                                <span class="bin-info-label">Country</span>
+                                <span class="bin-info-value">${data.country}</span>
                             </div>
                         `;
-                        container.appendChild(binInfoDiv);
                     } else {
                         const errorData = await response.json();
                         totalDatabaseBINs = errorData.total_database || 0;
                         
-                        const errorDiv = document.createElement('div');
-                        errorDiv.className = 'p-4 bg-gray-50 border border-gray-200 rounded-xl';
-                        errorDiv.innerHTML = `
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">BIN</span>
-                                <span class="text-gray-500 font-medium">${binNumber} - Not Found</span>
+                        binInfoDiv.innerHTML = `
+                            <div class="bin-info-item">
+                                <span class="bin-info-label">BIN</span>
+                                <span class="bin-info-value" style="color: #6b7280;">${binNumber} - Not Found</span>
                             </div>
                         `;
-                        container.appendChild(errorDiv);
                     }
+                    
+                    container.appendChild(binInfoDiv);
                 } catch (error) {
-                    console.error('Error checking BIN:', error);
                     const errorDiv = document.createElement('div');
-                    errorDiv.className = 'p-4 bg-red-50 border border-red-200 rounded-xl';
+                    errorDiv.className = 'bin-info';
                     errorDiv.innerHTML = `
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide">BIN</span>
-                            <span class="text-red-600 font-medium">${binNumber} - Network Error</span>
+                        <div class="bin-info-item">
+                            <span class="bin-info-label">BIN</span>
+                            <span class="bin-info-value" style="color: #dc2626;">${binNumber} - Error</span>
                         </div>
                     `;
                     container.appendChild(errorDiv);
                 }
                 
-                // Small delay to prevent overwhelming the server
-                await new Promise(resolve => setTimeout(resolve, 100));
+                await new Promise(resolve => setTimeout(resolve, 200));
             }
             
             // Show statistics
@@ -499,11 +640,13 @@
             document.getElementById('totalDatabase').textContent = totalDatabaseBINs.toLocaleString();
             document.getElementById('checkedBins').textContent = checkedBINsSet.size.toLocaleString();
             
+            document.getElementById('binProgressBar').classList.add('hidden');
             btn.disabled = false;
             btn.innerHTML = '<i data-lucide="search" class="w-5 h-5"></i>Check BINs';
             lucide.createIcons();
         }
 
+        // Stripe Checker - Fixed API response handling
         async function checkCards() {
             if (isChecking) return;
             
@@ -518,8 +661,7 @@
             isChecking = true;
             const btn = document.getElementById('checkBtn');
             btn.disabled = true;
-            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>Checking...';
-            lucide.createIcons();
+            btn.innerHTML = 'Checking<span class="loading-spinner"></span>';
             
             document.getElementById('checkerResults').innerHTML = '';
             document.getElementById('progressBar').classList.remove('hidden');
@@ -536,7 +678,6 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
                         },
                         body: JSON.stringify({ card: card })
                     });
@@ -570,7 +711,7 @@
                 
                 // Rate limiting delay
                 if (i < cards.length - 1) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    await countdown(7);
                 }
             }
             
@@ -585,49 +726,32 @@
             const resultsDiv = document.getElementById('checkerResults');
             const resultCard = document.createElement('div');
             
-            const statusColors = {
-                'SUCCESS': 'bg-green-50 border-green-200',
-                'FAIL': 'bg-red-50 border-red-200',
-                'UNKNOWN': 'bg-yellow-50 border-yellow-200',
-                'ERROR': 'bg-gray-50 border-gray-200'
-            };
+            const statusClass = result.status.toLowerCase();
+            const statusText = result.status === 'SUCCESS' ? 'APPROVED' : result.status === 'FAIL' ? 'DECLINED' : result.status.toUpperCase();
             
-            const statusTexts = {
-                'SUCCESS': 'APPROVED',
-                'FAIL': 'DECLINED',
-                'UNKNOWN': 'UNKNOWN',
-                'ERROR': 'ERROR'
-            };
-            
-            const statusTextColors = {
-                'SUCCESS': 'text-green-600',
-                'FAIL': 'text-red-600',
-                'UNKNOWN': 'text-yellow-600',
-                'ERROR': 'text-gray-600'
-            };
-            
-            const statusIcons = {
-                'SUCCESS': 'check-circle',
-                'FAIL': 'x-circle',
-                'UNKNOWN': 'help-circle',
-                'ERROR': 'alert-circle'
-            };
-            
-            resultCard.className = `p-4 border rounded-xl ${statusColors[result.status] || statusColors.UNKNOWN}`;
+            resultCard.className = `card-result ${statusClass}`;
             
             resultCard.innerHTML = `
-                <div class="font-mono text-gray-900 font-semibold mb-2 text-sm">${result.card}</div>
-                <div class="flex items-center gap-2">
-                    <i data-lucide="${statusIcons[result.status] || 'help-circle'}" class="w-4 h-4 ${statusTextColors[result.status] || statusTextColors.UNKNOWN}"></i>
-                    <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusTextColors[result.status] || statusTextColors.UNKNOWN} bg-white border">
-                        ${statusTexts[result.status] || statusTexts.UNKNOWN}
-                    </span>
-                    <span class="text-gray-700 text-sm">${result.message}</span>
+                <div class="card-number">${result.card}</div>
+                <div class="card-status">
+                    <span class="status-badge ${statusClass}">${statusText}</span>
+                    ${result.message}
                 </div>
             `;
             
             resultsDiv.appendChild(resultCard);
-            lucide.createIcons();
+        }
+
+        async function countdown(seconds) {
+            const countdownDiv = document.getElementById('countdown');
+            countdownDiv.classList.remove('hidden');
+            
+            for (let i = seconds; i > 0; i--) {
+                countdownDiv.textContent = `Next card in ${i} second${i > 1 ? 's' : ''}...`;
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            countdownDiv.classList.add('hidden');
         }
 
         // Utility functions
