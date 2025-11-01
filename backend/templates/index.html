@@ -149,205 +149,267 @@
             font-weight: 700;
             font-size: 15px;
         }
+
+        /* Mobile vertical tabs */
+        @media (max-width: 768px) {
+            .mobile-tabs {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .mobile-tab-btn {
+                width: 100%;
+                text-align: left;
+                padding: 12px 16px;
+            }
+            
+            .desktop-tabs {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-tabs {
+                display: none;
+            }
+            
+            .desktop-tabs {
+                display: grid;
+            }
+        }
     </style>
 </head>
-<body class="font-geist bg-white min-h-screen flex flex-col items-center justify-center p-4">
-    <div class="w-full max-w-4xl bg-white border border-gray-200 rounded-2xl p-6 md:p-8 mb-6">
-        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-6 md:mb-8">Card Tools</h1>
-        
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 bg-gray-50 p-2 rounded-xl border border-gray-200 mb-6 md:mb-8">
-            <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg bg-primary text-white transition-colors flex items-center justify-center gap-2" data-tab="card-generator">
-                <i data-lucide="credit-card" class="w-4 h-4"></i>
-                <span class="hidden sm:inline">Card Generator</span>
-                <span class="sm:hidden">Cards</span>
-            </button>
-            <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center justify-center gap-2" data-tab="bin-generator">
-                <i data-lucide="database" class="w-4 h-4"></i>
-                <span class="hidden sm:inline">BIN Gen</span>
-                <span class="sm:hidden">BINs</span>
-            </button>
-            <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center justify-center gap-2" data-tab="bin-checker">
-                <i data-lucide="search" class="w-4 h-4"></i>
-                <span class="hidden sm:inline">BIN Checker</span>
-                <span class="sm:hidden">Check</span>
-            </button>
-            <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center justify-center gap-2" data-tab="stripe-checker">
-                <i data-lucide="shield-check" class="w-4 h-4"></i>
-                <span class="hidden sm:inline">Stripe Check</span>
-                <span class="sm:hidden">Stripe</span>
-            </button>
-        </div>
-
-        <!-- Card Generator Tab -->
-        <div class="tab-content active" id="card-generator">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">BIN (Card Prefix)</label>
-                    <input type="text" id="bin" placeholder="e.g., 4242 or leave empty" 
-                           class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Amount</label>
-                    <input type="number" id="amount" placeholder="1" value="1" min="1" max="100"
-                           class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400">
-                </div>
-            </div>
+<body class="font-geist bg-white min-h-screen flex flex-col">
+    <div class="flex-1 flex items-center justify-center p-4">
+        <div class="w-full max-w-4xl bg-white border border-gray-200 rounded-2xl p-6 md:p-8">
+            <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-6 md:mb-8">Card Tools</h1>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Month (MM)</label>
-                    <select id="month" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-gray-400 appearance-none bg-white">
-                        <option value="">Random</option>
-                        <option value="01">01</option>
-                        <option value="02">02</option>
-                        <option value="03">03</option>
-                        <option value="04">04</option>
-                        <option value="05">05</option>
-                        <option value="06">06</option>
-                        <option value="07">07</option>
-                        <option value="08">08</option>
-                        <option value="09">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                    </select>
+            <!-- Desktop Tabs -->
+            <div class="desktop-tabs grid-cols-2 md:grid-cols-4 gap-2 bg-gray-50 p-2 rounded-xl border border-gray-200 mb-6 md:mb-8">
+                <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg bg-primary text-white transition-colors flex items-center justify-center gap-2" data-tab="card-generator">
+                    <i data-lucide="credit-card" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Card Generator</span>
+                    <span class="sm:hidden">Cards</span>
+                </button>
+                <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center justify-center gap-2" data-tab="bin-generator">
+                    <i data-lucide="database" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">BIN Gen</span>
+                    <span class="sm:hidden">BINs</span>
+                </button>
+                <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center justify-center gap-2" data-tab="bin-checker">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">BIN Checker</span>
+                    <span class="sm:hidden">Check</span>
+                </button>
+                <button class="tab-btn py-3 px-2 md:px-4 text-xs md:text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center justify-center gap-2" data-tab="stripe-checker">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Stripe Check</span>
+                    <span class="sm:hidden">Stripe</span>
+                </button>
+            </div>
+
+            <!-- Mobile Vertical Tabs -->
+            <div class="mobile-tabs bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
+                <button class="mobile-tab-btn tab-btn text-sm font-semibold rounded-lg bg-primary text-white transition-colors flex items-center gap-2 mb-2" data-tab="card-generator">
+                    <i data-lucide="credit-card" class="w-4 h-4"></i>
+                    Card Generator
+                </button>
+                <button class="mobile-tab-btn tab-btn text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2 mb-2" data-tab="bin-generator">
+                    <i data-lucide="database" class="w-4 h-4"></i>
+                    BIN Generator
+                </button>
+                <button class="mobile-tab-btn tab-btn text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2 mb-2" data-tab="bin-checker">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                    BIN Checker
+                </button>
+                <button class="mobile-tab-btn tab-btn text-sm font-semibold rounded-lg text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2" data-tab="stripe-checker">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                    Stripe Checker
+                </button>
+            </div>
+
+            <!-- Card Generator Tab -->
+            <div class="tab-content active" id="card-generator">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">BIN (Card Prefix)</label>
+                        <input type="text" id="bin" placeholder="e.g., 4242 or leave empty" 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Amount</label>
+                        <input type="number" id="amount" placeholder="1" value="1" min="1" max="100"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Year (YYYY)</label>
-                    <select id="year" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-gray-400 appearance-none bg-white">
-                    </select>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Month (MM)</label>
+                        <select id="month" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-gray-400 appearance-none bg-white">
+                            <option value="">Random</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Year (YYYY)</label>
+                        <select id="year" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-gray-400 appearance-none bg-white">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">CVV</label>
+                        <input type="text" id="cvv" placeholder="Auto-generate"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">CVV</label>
-                    <input type="text" id="cvv" placeholder="Auto-generate"
+
+                <button id="generateBtn" onclick="generateCards()" 
+                        class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    Generate Cards
+                </button>
+
+                <div class="result-box hidden mt-6 p-6 bg-gray-50 border border-gray-200 rounded-xl font-mono text-sm" id="cardsResultBox"></div>
+
+                <div class="grid grid-cols-2 gap-3 mt-4 hidden" id="copyButtons">
+                    <button class="copy-btn py-3 bg-gray-800 text-white font-semibold rounded-xl flex items-center justify-center gap-2" onclick="copyAllCards()">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                        Copy All
+                    </button>
+                    <button class="copy-btn py-3 bg-gray-300 text-gray-700 font-semibold rounded-xl flex items-center justify-center gap-2" onclick="clearCards()">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        Clear
+                    </button>
+                </div>
+            </div>
+
+            <!-- BIN Generator Tab -->
+            <div class="tab-content hidden" id="bin-generator">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Card Type</label>
+                        <select id="cardType" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-gray-400 appearance-none bg-white">
+                            <option value="visa">Visa</option>
+                            <option value="mastercard">Mastercard</option>
+                            <option value="amex">American Express</option>
+                            <option value="discover">Discover</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Generation Mode</label>
+                        <select id="generationMode" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-gray-400 appearance-none bg-white">
+                            <option value="random">Generate Randomly</option>
+                            <option value="database">Grab from Database</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Amount</label>
+                    <input type="number" id="binAmount" placeholder="1" value="1" min="1" max="100"
                            class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400">
                 </div>
-            </div>
 
-            <button id="generateBtn" onclick="generateCards()" 
-                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
-                <i data-lucide="sparkles" class="w-5 h-5"></i>
-                Generate Cards
-            </button>
-
-            <div class="result-box hidden mt-6 p-6 bg-gray-50 border border-gray-200 rounded-xl font-mono text-sm" id="cardsResultBox"></div>
-
-            <div class="grid grid-cols-2 gap-3 mt-4 hidden" id="copyButtons">
-                <button class="copy-btn py-3 bg-gray-800 text-white font-semibold rounded-xl flex items-center justify-center gap-2" onclick="copyAllCards()">
-                    <i data-lucide="copy" class="w-4 h-4"></i>
-                    Copy All
+                <button id="binGenerateBtn" onclick="generateBINs()" 
+                        class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
+                    <i data-lucide="database" class="w-5 h-5"></i>
+                    Generate BINs
                 </button>
-                <button class="copy-btn py-3 bg-gray-300 text-gray-700 font-semibold rounded-xl flex items-center justify-center gap-2" onclick="clearCards()">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                    Clear
-                </button>
-            </div>
-        </div>
 
-        <!-- BIN Generator Tab -->
-        <div class="tab-content hidden" id="bin-generator">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Card Type</label>
-                    <select id="cardType" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-gray-400 appearance-none bg-white">
-                        <option value="visa">Visa</option>
-                        <option value="mastercard">Mastercard</option>
-                        <option value="amex">American Express</option>
-                        <option value="discover">Discover</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Generation Mode</label>
-                    <select id="generationMode" class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:border-gray-400 appearance-none bg-white">
-                        <option value="random">Generate Randomly</option>
-                        <option value="database">Grab from Database</option>
-                    </select>
+                <div class="result-box hidden mt-6 p-6 bg-gray-50 border border-gray-200 rounded-xl font-mono text-sm" id="binResultBox"></div>
+
+                <div class="grid grid-cols-2 gap-3 mt-4 hidden" id="binCopyButtons">
+                    <button class="copy-btn py-3 bg-gray-800 text-white font-semibold rounded-xl flex items-center justify-center gap-2" onclick="copyAllBINs()">
+                        <i data-lucide="copy" class="w-4 h-4"></i>
+                        Copy All
+                    </button>
+                    <button class="copy-btn py-3 bg-gray-300 text-gray-700 font-semibold rounded-xl flex items-center justify-center gap-2" onclick="clearBINs()">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        Clear
+                    </button>
                 </div>
             </div>
 
-            <div class="mb-6">
-                <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Amount</label>
-                <input type="number" id="binAmount" placeholder="1" value="1" min="1" max="100"
-                       class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400">
-            </div>
+            <!-- BIN Checker Tab -->
+            <div class="tab-content hidden" id="bin-checker">
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">BIN Numbers (one per line)</label>
+                    <textarea id="binInput" placeholder="434907&#10;402360&#10;411111" 
+                              class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono text-sm"></textarea>
+                </div>
 
-            <button id="binGenerateBtn" onclick="generateBINs()" 
-                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
-                <i data-lucide="database" class="w-5 h-5"></i>
-                Generate BINs
-            </button>
-
-            <div class="result-box hidden mt-6 p-6 bg-gray-50 border border-gray-200 rounded-xl font-mono text-sm" id="binResultBox"></div>
-
-            <div class="grid grid-cols-2 gap-3 mt-4 hidden" id="binCopyButtons">
-                <button class="copy-btn py-3 bg-gray-800 text-white font-semibold rounded-xl flex items-center justify-center gap-2" onclick="copyAllBINs()">
-                    <i data-lucide="copy" class="w-4 h-4"></i>
-                    Copy All
+                <button id="checkBinBtn" onclick="checkBulkBINs()" 
+                        class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                    Check BINs
                 </button>
-                <button class="copy-btn py-3 bg-gray-300 text-gray-700 font-semibold rounded-xl flex items-center justify-center gap-2" onclick="clearBINs()">
-                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                    Clear
-                </button>
-            </div>
-        </div>
 
-        <!-- BIN Checker Tab -->
-        <div class="tab-content hidden" id="bin-checker">
-            <div class="mb-6">
-                <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">BIN Numbers (one per line)</label>
-                <textarea id="binInput" placeholder="434907&#10;402360&#10;411111" 
-                          class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono text-sm"></textarea>
-            </div>
+                <div class="progress-bar hidden mt-6" id="binProgressBar">
+                    <div class="progress-fill" id="binProgressFill"></div>
+                </div>
 
-            <button id="checkBinBtn" onclick="checkBulkBINs()" 
-                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
-                <i data-lucide="search" class="w-5 h-5"></i>
-                Check BINs
-            </button>
-
-            <div class="progress-bar hidden mt-6" id="binProgressBar">
-                <div class="progress-fill" id="binProgressFill"></div>
-            </div>
-
-            <div class="hidden mt-6" id="binStats">
-                <div class="grid grid-cols-2 gap-4 md:gap-6 p-4 md:p-6 bg-gray-50 border border-gray-200 rounded-xl">
-                    <div>
-                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Database</div>
-                        <div id="totalDatabase" class="text-xl md:text-2xl font-bold text-gray-900"></div>
-                    </div>
-                    <div>
-                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Checked BINs</div>
-                        <div id="checkedBins" class="text-xl md:text-2xl font-bold text-gray-900"></div>
+                <div class="hidden mt-6" id="binStats">
+                    <div class="grid grid-cols-2 gap-4 md:gap-6 p-4 md:p-6 bg-gray-50 border border-gray-200 rounded-xl">
+                        <div>
+                            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Database</div>
+                            <div id="totalDatabase" class="text-xl md:text-2xl font-bold text-gray-900"></div>
+                        </div>
+                        <div>
+                            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Checked BINs</div>
+                            <div id="checkedBins" class="text-xl md:text-2xl font-bold text-gray-900"></div>
+                        </div>
                     </div>
                 </div>
+
+                <div id="binInfoContainer" class="mt-6 space-y-4"></div>
             </div>
 
-            <div id="binInfoContainer" class="mt-6 space-y-4"></div>
-        </div>
+            <!-- Stripe Checker Tab -->
+            <div class="tab-content hidden" id="stripe-checker">
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Cards to Check (one per line)</label>
+                    <textarea id="cardsInput" placeholder="4242424242424242|03|2029|123&#10;5555555555554444|12|2028|456" 
+                              class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono text-sm"></textarea>
+                </div>
 
-        <!-- Stripe Checker Tab -->
-        <div class="tab-content hidden" id="stripe-checker">
-            <div class="mb-6">
-                <label class="block text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wide">Cards to Check (one per line)</label>
-                <textarea id="cardsInput" placeholder="4242424242424242|03|2029|123&#10;5555555555554444|12|2028|456" 
-                          class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 min-h-32 font-mono text-sm"></textarea>
+                <button id="checkBtn" onclick="checkCards()" 
+                        class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    Check Cards
+                </button>
+
+                <div class="progress-bar hidden mt-6" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="countdown hidden text-center text-gray-700 mt-4 font-semibold" id="countdown"></div>
+
+                <div class="checker-results mt-6 space-y-4" id="checkerResults"></div>
             </div>
-
-            <button id="checkBtn" onclick="checkCards()" 
-                    class="w-full py-4 bg-primary text-white font-semibold rounded-xl uppercase tracking-wide flex items-center justify-center gap-2">
-                <i data-lucide="shield-check" class="w-5 h-5"></i>
-                Check Cards
-            </button>
-
-            <div class="progress-bar hidden mt-6" id="progressBar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-
-            <div class="countdown hidden text-center text-gray-700 mt-4 font-semibold" id="countdown"></div>
-
-            <div class="checker-results mt-6 space-y-4" id="checkerResults"></div>
         </div>
     </div>
+
+    <!-- Sticky Footer -->
+    <footer class="bg-gray-900 text-white py-4 mt-auto sticky bottom-0">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">
+                Design by Kaiiddo <a href="https://telegram.me/kaiiddo" class="text-blue-400 hover:text-blue-300 underline">@kaiiddo</a> | 
+                All rights reserved Net x Defender 2025 <a href="https://t.me/+OEpFBmIwyag5ZTU9" class="text-blue-400 hover:text-blue-300 underline">Join Channel</a>
+            </p>
+        </div>
+    </footer>
 
     <script>
         // Initialize Lucide icons
@@ -370,32 +432,46 @@
             yearSelect.appendChild(option);
         }
 
-        // Tab switching functionality
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                // Update active tab button
-                document.querySelectorAll('.tab-btn').forEach(b => {
-                    b.classList.remove('bg-primary', 'text-white');
-                    b.classList.add('text-gray-600', 'hover:text-gray-900');
+        // Tab switching functionality for both desktop and mobile
+        function setupTabSwitching() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active tab button for desktop
+                    document.querySelectorAll('.desktop-tabs .tab-btn').forEach(b => {
+                        b.classList.remove('bg-primary', 'text-white');
+                        b.classList.add('text-gray-600', 'hover:text-gray-900');
+                    });
+                    
+                    // Update active tab button for mobile
+                    document.querySelectorAll('.mobile-tabs .tab-btn').forEach(b => {
+                        b.classList.remove('bg-primary', 'text-white');
+                        b.classList.add('text-gray-600', 'hover:text-gray-900');
+                    });
+                    
+                    // Activate current button in both views
+                    const tabId = this.getAttribute('data-tab');
+                    const correspondingButtons = document.querySelectorAll(`[data-tab="${tabId}"]`);
+                    correspondingButtons.forEach(button => {
+                        button.classList.add('bg-primary', 'text-white');
+                        button.classList.remove('text-gray-600', 'hover:text-gray-900');
+                    });
+                    
+                    // Update active tab content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                        content.classList.add('hidden');
+                    });
+                    document.getElementById(tabId).classList.add('active');
+                    document.getElementById(tabId).classList.remove('hidden');
+                    
+                    // Refresh icons for the new tab
+                    lucide.createIcons();
                 });
-                this.classList.add('bg-primary', 'text-white');
-                this.classList.remove('text-gray-600', 'hover:text-gray-900');
-                
-                // Update active tab content
-                const tabId = this.getAttribute('data-tab');
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                    content.classList.add('hidden');
-                });
-                document.getElementById(tabId).classList.add('active');
-                document.getElementById(tabId).classList.remove('hidden');
-                
-                // Refresh icons for the new tab
-                lucide.createIcons();
             });
-        });
+        }
 
-        // Card Generator - Fixed API response handling
+        // Card Generator - Send multiple requests based on amount
         async function generateCards() {
             const bin = document.getElementById('bin').value;
             const month = document.getElementById('month').value;
@@ -415,35 +491,38 @@
             document.getElementById('copyButtons').classList.add('hidden');
 
             try {
-                const response = await fetch('/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        bin: bin, 
-                        month: month, 
-                        year: year, 
-                        cvv: cvv,
-                        amount: amount 
-                    })
-                });
+                // Send multiple requests based on amount
+                for (let i = 0; i < amount; i++) {
+                    const response = await fetch('/generate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            bin: bin, 
+                            month: month, 
+                            year: year, 
+                            cvv: cvv
+                        })
+                    });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
 
-                const data = await response.json();
-                
-                // Handle both single card and multiple cards response
-                if (data.card) {
-                    // Single card response (original format)
-                    generatedCardsList = [data.card];
-                } else if (data.cards && Array.isArray(data.cards)) {
-                    // Multiple cards response
-                    generatedCardsList = data.cards;
-                } else {
-                    throw new Error('Invalid response format');
+                    const data = await response.json();
+                    
+                    // Handle single card response
+                    if (data.card) {
+                        generatedCardsList.push(data.card);
+                    } else {
+                        throw new Error('Invalid response format');
+                    }
+
+                    // Small delay between requests
+                    if (i < amount - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
                 }
 
                 resultBox.textContent = generatedCardsList.join('\n');
@@ -461,7 +540,7 @@
             lucide.createIcons();
         }
 
-        // BIN Generator - Fixed API response handling
+        // BIN Generator - Send multiple requests based on amount
         async function generateBINs() {
             const cardType = document.getElementById('cardType').value;
             const mode = document.getElementById('generationMode').value;
@@ -479,33 +558,36 @@
             document.getElementById('binCopyButtons').classList.add('hidden');
 
             try {
-                const response = await fetch('/generate_bin', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        card_type: cardType, 
-                        mode: mode,
-                        amount: amount 
-                    })
-                });
+                // Send multiple requests based on amount
+                for (let i = 0; i < amount; i++) {
+                    const response = await fetch('/generate_bin', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            card_type: cardType, 
+                            mode: mode
+                        })
+                    });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
 
-                const data = await response.json();
-                
-                // Handle both single BIN and multiple BINs response
-                if (data.bin) {
-                    // Single BIN response (original format)
-                    generatedBINsList = [data.bin];
-                } else if (data.bins && Array.isArray(data.bins)) {
-                    // Multiple BINs response
-                    generatedBINsList = data.bins;
-                } else {
-                    throw new Error('Invalid response format');
+                    const data = await response.json();
+                    
+                    // Handle single BIN response
+                    if (data.bin) {
+                        generatedBINsList.push(data.bin);
+                    } else {
+                        throw new Error('Invalid response format');
+                    }
+
+                    // Small delay between requests
+                    if (i < amount - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
                 }
 
                 resultBox.textContent = generatedBINsList.join('\n');
@@ -798,6 +880,7 @@
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
             lucide.createIcons();
+            setupTabSwitching();
         });
     </script>
 </body>
